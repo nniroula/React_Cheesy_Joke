@@ -1,36 +1,75 @@
-import React from "react";
-// import React, { Component }  from "react";
+// NOTE: Some of the functionalities in the refactoring are used from the solution.
+
+// import React from "react";
+import React, { Component } from "react"; // for class based componet, need Component
 import "./Joke.css";
 
-function Joke({ vote, votes, text, id }) {
-  const upVote = () => vote(id, +1);
-  const downVote = () => vote(id, -1);
+// Functional component
+// function Joke({ vote, votes, text, id }) {
+//   const upVote = () => vote(id, +1);
+//   const downVote = () => vote(id, -1);
 
-// class Joke extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.upVote = this.upVote.bind(this); // bind the object(instance) of the class
-//         this.downVote = this.downVote.bind(this);
-//         // this.toggleLock = this.toggleLock.bind(this);
-//     }
+// Class based component
+class Joke extends Component {
+    constructor(props) {
+        super(props);
+        this.upVote = this.upVote.bind(this); // bind the object(instance) of the class
+        this.downVote = this.downVote.bind(this);
+        this.toggleLock = this.toggleLock.bind(this); // used from the solution
+    }
 
-  return (
-    <div className="Joke">
-      <div className="Joke-votearea">
-        <button onClick={upVote}>
-          <i className="fas fa-thumbs-up" />
-        </button>
+    upVote() {
+        this.props.vote(this.props.id, +1);
+    }
 
-        <button onClick={downVote}>
-          <i className="fas fa-thumbs-down" />
-        </button>
+    downVote() {
+        this.props.vote(this.props.id, -1);
+    }
 
-        {votes}
-      </div>
+    // used from the solution
+    toggleLock() {
+        this.props.toggleLock(this.props.id);
+    }
+    
+    //Functional rendering
+    // return (
+    //     <div className="Joke">
+    //       <div className="Joke-votearea">
+    //         <button onClick={upVote}>
+    //           <i className="fas fa-thumbs-up" />
+    //         </button>
 
-      <div className="Joke-text">{text}</div>
-    </div>
-  );
+    //         <button onClick={downVote}>
+    //           <i className="fas fa-thumbs-down" />
+    //         </button>
+
+    //         {votes}
+    //       </div>
+
+    //       <div className="Joke-text">{text}</div>
+    //     </div>
+    //   );
+
+    // Class based rendering
+    render() {
+        return (
+            <div className={`Joke ${this.props.locked ? "Joke-locked" : ""}`}>
+                <div className="Joke-votearea">
+                    <button onClick={this.upVote}>
+                        <i className="fas fa-thumbs-up" />
+                    </button>
+                    <button onClick={this.downVote}>
+                        <i className="fas fa-thumbs-down" />
+                    </button>
+                    <button onClick={this.toggleLock}>
+                        <i className={`fas ${this.props.locked ? "fa-unlock" : "fa-lock"}`} />
+                    </button>
+                    {this.props.votes}
+                </div>
+                <div className="Joke-text">{this.props.text}</div>
+            </div>
+        );
+    }
 }
 
 export default Joke;
